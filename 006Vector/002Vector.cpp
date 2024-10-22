@@ -7,7 +7,8 @@ int main(){
     // cout << vec1.size() << "\n";
 
     vector <int> vec2 (10, -1);
-    cout << vec2.size() << "\n";
+    cout << "size of vector "<< vec2.size() << "\n";
+    cout << "capacity of vector "<< vec2.capacity() << "\n";
 
     for (int i=0; i<vec2.size();i++){
         cout << vec2[i] << " ";
