@@ -6,12 +6,12 @@ public:
     int data;
     Node* next;
 
-    Node (int val) {
+    Node (int val) {            // constructor
         data = val;
         next = NULL;
     }   
 
-    ~Node() {
+    ~Node() {                   // destructor
         // cout << "~Node () for data ==> " << data << endl;
         if (next != NULL){
             delete next;
@@ -22,16 +22,18 @@ public:
 };
 
 class List {
+    
     Node* head;
     Node* tail;
 
 public:
-    List() {
+    
+    List() {                // constructor  
         head = NULL;
         tail = NULL;
     }
 
-    ~List (){
+    ~List (){               // destructor
         // cout << "~List ()\n ";
         if(head != NULL) {
             delete head;
@@ -40,8 +42,12 @@ public:
     }
 
     void push_front (int val){
-        Node * newNode = new Node(val);    
-        // new is used because its allocating memory dynamically after funcrtion call its still existing
+        // to create a new node
+
+        Node * newNode = new Node(val);   
+
+        // new is used because its allocating memory dynamically after 
+        // funcrtion call its still existing
 
         if (head == NULL) {
             head = tail = newNode;
@@ -50,7 +56,6 @@ public:
             newNode -> next = head;
             head = newNode;
         }
-
     }
 
     void push_back (int val){
@@ -62,30 +67,6 @@ public:
             tail -> next = newNode;
             tail = newNode;
         }
-    }
-
-    void printList() {
-        Node * temp = head;
-        while (temp != NULL) {
-            cout << temp -> data << " ==> ";
-            temp = temp -> next;
-        }
-        cout << "NULL\n";
-    }
-
-    void insert (int val, int pos){
-        Node * newNode = new Node(val);
-        Node * temp = head;
-        for (int i=0;i<pos-1;i++){
-            if (temp == NULL) {
-                cout << "Invalid Position\n";
-                return;
-            }
-            temp = temp -> next;
-        }
-        // temp is now at pos-1 i.e the node before the pos
-        newNode -> next = temp -> next;
-        temp -> next = newNode;
     }
 
     void pop_front() {
@@ -115,6 +96,21 @@ public:
         tail = temp;
     }
 
+    void insert (int val, int pos){
+        Node * newNode = new Node(val);
+        Node * temp = head;
+        for (int i=0;i<pos-1;i++){
+            if (temp == NULL) {
+                cout << "Invalid Position\n";
+                return;
+            }
+            temp = temp -> next;
+        }
+        // temp is now at pos-1 i.e the node before the pos
+        newNode -> next = temp -> next;
+        temp -> next = newNode;
+    }
+  
     int searchItr (int key){
         Node * temp = head;
         int idx = 0;
@@ -129,7 +125,7 @@ public:
         }
         cout << "Not Found\n";
         return -1;
-    }
+    }  
 
     int helper(Node * temp, int key){
         
@@ -154,9 +150,14 @@ public:
         return helper(head, key);
     }
 
-    
-
-
+    void printList() {
+        Node * temp = head;
+        while (temp != NULL) {
+            cout << temp -> data << " ==> ";
+            temp = temp -> next;
+        }
+        cout << "NULL\n";
+    }
 };
 
 int main() {
@@ -168,6 +169,13 @@ int main() {
     ll.push_front(3);
     ll.push_front(2);
     ll.push_front(1);
+
+    ll.push_back(6);
+    ll.push_back(7);
+    ll.push_back(8);
+    ll.push_back(9);
+    ll.push_back(10);
+
     ll.printList();
 
     // ll.pop_front();  
@@ -180,7 +188,7 @@ int main() {
 
     // ll.printList();
 
-    cout << ll.searchRec(4) << endl;
+    // cout << ll.searchRec(4) << endl;
 
     return 0;
 }
