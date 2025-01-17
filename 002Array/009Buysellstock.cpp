@@ -19,7 +19,7 @@ void maxProfit(int *prices, int n){
     }
 
 
-    cout << "max Profit = "<<maxProfit << endl; 
+    cout << " \n max Profit = "<<maxProfit << endl; 
 }
 
 int main(){
