@@ -23,9 +23,6 @@ public:
     void setPassword(string password){
         this->password = password;
     }
-
-
-
 };
 
 int main() {
