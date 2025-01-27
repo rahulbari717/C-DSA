@@ -9,8 +9,9 @@ int pow(int x, int n) {
 
     int halfPow = pow(x, n/2);
     int halfPowSq = halfPow * halfPow;
-    if (n%2 != 0) {
-        halfPowSq = x * halfPowSq;
+
+    if (n%2 != 0) {// odd 
+        return halfPowSq = x * halfPowSq;
     }
     return halfPowSq;
 }
