@@ -2,7 +2,7 @@
 using namespace std;
 
 int main(){
-    int n;
+    int n;          // size of array or length of array
     cout <<"Enter length of array : ";
     cin >> n;
 

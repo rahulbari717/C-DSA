@@ -154,7 +154,7 @@ public:
         Node * temp = head;
         while (temp != NULL) {
             cout << temp -> data << " ==> ";
-            temp = temp -> next;
+            temp = temp  -> next;
         }
         cout << "NULL\n";
     }
