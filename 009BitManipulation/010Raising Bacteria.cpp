@@ -26,7 +26,6 @@ long long countSetBits(long long n){
         count++;
     }
     return count;
-
 }
 
 int main(){
