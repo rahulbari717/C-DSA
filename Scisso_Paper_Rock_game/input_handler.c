@@ -34,7 +34,7 @@ int getRoundsInput() {
     int valid = 0;
     
     while (!valid) {
-        printf("How many rounds would you like to play? (1-10): ");
+        printf("How many rounds would you like to play? (1-5): ");
         if (scanf("%d", &rounds) != 1) {
             // Clear input buffer
             while (getchar() != '\n');
@@ -45,10 +45,10 @@ int getRoundsInput() {
         // Clear input buffer
         while (getchar() != '\n');
         
-        if (rounds >= 1 && rounds <= 10) {
+        if (rounds >= 1 && rounds <= 5) {
             valid = 1;
         } else {
-            printf("Please enter a number between 1 and 10.\n");
+            printf("Please enter a number between 1 and 5.\n");
         }
     }
     

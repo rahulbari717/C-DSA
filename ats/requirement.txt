@@ -1,0 +1,582 @@
+# Job Application Tracker & ATS Simulator Documentation
+
+## 1. Functional Requirements Document
+
+### Project Overview
+- **Purpose**: Develop a C-based software that helps job seekers track application status and evaluate resume-job description matches
+- **Target Users**: Job seekers, particularly in technical fields
+- **Problem Statement**: Job seekers struggle to organize applications and optimize resumes for specific job descriptions
+
+### Scope
+
+#### In-Scope
+- Job application management system
+- Resume-JD keyword matching (ATS simulation)
+- AI-based prediction system for selection chances
+- Command-line interface
+- Secure access via password
+- Local file storage for data persistence
+
+#### Out-of-Scope
+- Web or GUI interface
+- Direct integration with job boards
+- Automated application submission
+- Resume editor/builder
+- Multi-user access
+
+#### Constraints & Assumptions
+- Users have basic CLI familiarity
+- Resume is available in TXT format or pre-converted from PDF
+- Software will run on standard desktop environments
+- Single-user application with local data storage
+
+### User Requirements
+
+#### Must-Have Requirements
+1. "As a job seeker, I want to securely log in to protect my data."
+2. "As a job seeker, I want to record details of job applications so I can track them."
+3. "As a job seeker, I want to update application status so I can monitor progress."
+4. "As a job seeker, I want to match my resume against job descriptions to improve my application."
+5. "As a job seeker, I want to see my chances of selection to focus on promising opportunities."
+
+#### Should-Have Requirements
+1. "As a job seeker, I want to view statistics about my applications to understand my job search better."
+2. "As a job seeker, I want to see which keywords are missing from my resume to improve my application materials."
+
+#### Could-Have Requirements
+1. "As a job seeker, I want the system to learn from my application history to make better predictions."
+2. "As a job seeker, I want to export my application data for backup or analysis."
+
+### Functional Requirements
+
+#### Login System
+- **Input**: Password string
+- **Processing**: Compare with stored password
+- **Output**: Access granted or denied message
+- **Error Handling**: Exit on failure, limited attempts
+
+#### Job Tracker Module
+- **Input**: Job application details (company, role, date, etc.)
+- **Processing**: Store, update, or retrieve application data
+- **Output**: Confirmation messages, application listings
+- **Error Handling**: Input validation, file operation error handling
+
+#### Keyword Matcher Module
+- **Input**: Job description text, resume file path
+- **Processing**: Extract keywords from JD, compare with resume
+- **Output**: Match percentage, matched/missing keywords
+- **Error Handling**: File not found, parsing errors
+
+#### AI Prediction Engine
+- **Input**: Match percentage, application history, job role details
+- **Processing**: Calculate selection probability using heuristic algorithm
+- **Output**: Prediction score, chance category (High/Medium/Low)
+- **Error Handling**: Default to medium if insufficient data
+
+### Non-Functional Requirements
+
+#### Performance
+- Response time under 1 second for all operations
+- Capable of handling at least 500 job application records
+
+#### Security
+- Password-protected access
+- Local file storage for sensitive data
+- No transmission of data over networks
+
+#### Reliability
+- Data persistence across sessions
+- Error handling for all user inputs
+- Backup capability for application data
+
+#### Usability
+- Clear menu-driven interface
+- Consistent command patterns
+- Helpful error messages and prompts
+
+#### Maintainability
+- Modular code structure
+- Comprehensive documentation
+- Consistent coding style
+
+## 2. High-Level Design (HLD)
+
+### System Architecture
+
+```
++-------------------+        +-------------------+        +-------------------+
+|                   |        |                   |        |                   |
+|   Login System    |------->|    Main Menu      |------->|  Job Tracker      |
+|                   |        |                   |        |                   |
++-------------------+        +-------------------+        +-------------------+
+                                    |  |
+                                    |  |
+                  +------------------  ------------------+
+                  |                                      |
+        +-------------------+                  +-------------------+
+        |                   |                  |                   |
+        | Keyword Matcher   |<---------------->| AI Prediction     |
+        |                   |                  |                   |
+        +-------------------+                  +-------------------+
+                  |                                      |
+                  |                                      |
+        +-------------------+                  +-------------------+
+        |                   |                  |                   |
+        | File Storage      |<---------------->| Statistics        |
+        |                   |                  |                   |
+        +-------------------+                  +-------------------+
+```
+
+### Component Responsibilities
+
+1. **Login System**
+   - Authenticate users through password verification
+   - Provide secure access to the application
+
+2. **Main Menu**
+   - Serve as the central navigation hub
+   - Direct users to different modules
+
+3. **Job Tracker**
+   - Manage job application CRUD operations
+   - Display application status and details
+
+4. **Keyword Matcher**
+   - Parse job descriptions for keywords
+   - Compare resume text against extracted keywords
+   - Calculate match percentage
+
+5. **AI Prediction Engine**
+   - Evaluate selection chances based on multiple factors
+   - Categorize applications by probability of success
+
+6. **File Storage**
+   - Persist application data to files
+   - Load data from files on startup
+
+7. **Statistics**
+   - Calculate metrics on application process
+   - Display summary information
+
+### Data Flow
+
+```
+           +---------------+
+Input ---> |  User Input   |
+           +---------------+
+                  |
+                  v
+           +---------------+
+           | Input Parser  |
+           +---------------+
+                  |
+                  v
+       +---------------------+
+       |                     |
+       |  Function Executor  |
+       |                     |
+       +---------------------+
+              /      \
+             /        \
+            /          \
+           v            v
+  +--------------+    +----------------+
+  | Data Process |    | File Operation |
+  +--------------+    +----------------+
+           \            /
+            \          /
+             \        /
+              v      v
+         +---------------+
+         | Result Output |
+         +---------------+
+                |
+                v
+         +---------------+
+Output <-| User Display  |
+         +---------------+
+```
+
+### Database Design
+The application uses file-based storage rather than a traditional database.
+
+#### Data Models:
+
+1. **JobApplication**
+   - Company name
+   - Role
+   - Date applied
+   - Resume used
+   - Job description
+   - Application link
+   - Status
+   - Notes
+
+2. **KeywordResult**
+   - Keyword text
+   - Found flag (boolean)
+
+3. **PredictionData**
+   - Match score
+   - Selection category
+   - Prediction factors
+
+#### File Structure:
+- `applications.csv`: Stores job application data
+- `resume.txt`: Contains parsed resume text
+- `jd_keywords.txt`: Temporary file for extracted keywords
+
+### External Interfaces
+Not applicable as this is a standalone CLI application with no external API dependencies.
+
+### Technology Stack
+- **Programming Language**: C
+- **Build System**: Make
+- **Compiler**: GCC
+- **Libraries**: Standard C library
+- **Target Environment**: Linux/Unix command line, Windows command prompt
+
+## 3. Low-Level Design (LLD)
+
+### Module Design
+
+#### Login Module
+- **Purpose**: Authenticate user with password
+- **Dependencies**: None
+- **Functions**: `login()`
+
+#### Job Tracker Module
+- **Purpose**: Manage job applications
+- **Dependencies**: File Storage
+- **Functions**: `add_application()`, `view_applications()`, `update_application()`, `show_statistics()`
+
+#### Keyword Matcher Module
+- **Purpose**: Compare resume against job descriptions
+- **Dependencies**: File Storage
+- **Functions**: `load_resume_text()`, `parse_keywords()`, `match_keywords()`, `show_match_result()`
+
+#### AI Prediction Module
+- **Purpose**: Calculate selection chances
+- **Dependencies**: Keyword Matcher, Job Tracker
+- **Functions**: `predict_selection_score()`, `classify_prediction()`
+
+#### File Storage Module
+- **Purpose**: Handle data persistence
+- **Dependencies**: None
+- **Functions**: `save_to_file()`, `load_from_file()`
+
+### Data Structures
+
+#### JobApplication Struct
+```c
+typedef struct {
+    char company[100];
+    char role[100];
+    char date_applied[20];
+    char resume_used[100];
+    char job_description[500];
+    char application_link[200];
+    char status[20]; // Applied, Interviewing, Offer, Rejected
+    char notes[200];
+} JobApplication;
+```
+
+#### KeywordResult Struct
+```c
+typedef struct {
+    char keyword[50];
+    int found; // 1 = present in resume, 0 = not found
+} KeywordResult;
+```
+
+#### PredictionResult Struct
+```c
+typedef struct {
+    float score;
+    char category[20]; // High, Medium, Low
+    char factors[200]; // Explanation of prediction factors
+} PredictionResult;
+```
+
+### Algorithm Design
+
+#### Keyword Matching Algorithm
+```
+function match_keywords(job_description, resume_text):
+    keywords = extract_important_terms(job_description)
+    result_list = empty list
+    match_count = 0
+    
+    for each keyword in keywords:
+        if keyword exists in resume_text (case-insensitive):
+            add (keyword, TRUE) to result_list
+            increment match_count
+        else:
+            add (keyword, FALSE) to result_list
+    
+    match_percentage = (match_count * 100) / total_keywords
+    
+    return (match_percentage, result_list)
+```
+
+#### Prediction Algorithm
+```
+function predict_selection_score(match_percent, status_history, num_attempts, role):
+    score = match_percent
+    
+    // Apply penalties based on history
+    if num_attempts > 2:
+        score -= 10  // Penalize repeated attempts
+    
+    if role contains "Senior":
+        score -= 5   // Penalize senior roles if user is junior
+    
+    // History-based penalty
+    for each status in status_history:
+        if status is "Rejected":
+            score -= 5
+    
+    // Cap score between 0 and 100
+    score = max(0, min(100, score))
+    
+    return score
+```
+
+#### Category Classification
+```
+function classify_prediction(score):
+    if score >= 80:
+        return "High Chance"
+    else if score >= 50:
+        return "Medium Chance"
+    else:
+        return "Low Chance"
+```
+
+### Function Specifications
+
+#### Login Function
+- **Purpose**: Authenticate user
+- **Parameters**: None
+- **Returns**: None (exits on failure)
+- **Preconditions**: None
+- **Postconditions**: User authenticated or program terminated
+- **Error Handling**: Exit on wrong password
+```c
+void login() {
+    char input[100];
+    printf("Enter password: ");
+    scanf("%s", input);
+    if (strcmp(input, PASSWORD) != 0) {
+        printf("Access denied!\n");
+        exit(0);
+    }
+}
+```
+
+#### Add Application Function
+- **Purpose**: Add new job application to tracker
+- **Parameters**: None (gets data from user input)
+- **Returns**: None
+- **Preconditions**: User authenticated
+- **Postconditions**: New application added to storage
+- **Error Handling**: Input validation
+
+#### Match Keywords Function
+- **Purpose**: Compare JD with resume
+- **Parameters**: JD text, resume text
+- **Returns**: Match percentage, keyword results
+- **Preconditions**: Valid inputs
+- **Postconditions**: Match results calculated
+- **Error Handling**: Empty input handling
+
+#### Predict Selection Function
+- **Purpose**: Calculate selection probability
+- **Parameters**: Match percent, history, attempts, role
+- **Returns**: Prediction score, category
+- **Preconditions**: Valid inputs
+- **Postconditions**: Prediction calculated
+- **Error Handling**: Default to medium on insufficient data
+
+### State Diagrams
+
+#### Application Status State Diagram
+```
++------------+    apply     +---------------+    interview    +-------------+
+|            |------------->|               |--------------->|             |
+|  Created   |              |   Applied     |                | Interviewing|
+|            |              |               |                |             |
++------------+              +---------------+                +-------------+
+                                 |      |                          |
+                                 |      |                          |
+                   reject        |      |                          |
+                 +---------------+      |                          |
+                 |                      |                          |
+                 v                      v                          v
+          +------------+         +------------+             +------------+
+          |            |         |            |    offer    |            |
+          | Rejected   |         |   Closed   |<------------| Offer      |
+          |            |         |            |             |            |
+          +------------+         +------------+             +------------+
+```
+
+## 4. Additional Documentation
+
+### Test Plan
+
+#### Unit Tests
+1. Login validation
+2. Add/view/update application
+3. Keyword extraction
+4. Match percentage calculation
+5. Prediction algorithm
+6. File I/O operations
+
+#### Integration Tests
+1. End-to-end job application flow
+2. Resume matching with prediction
+3. Data persistence across sessions
+
+#### Test Cases
+| ID | Test Case | Expected Result |
+|----|-----------|----------------|
+| T1 | Login with correct password | Access granted |
+| T2 | Login with incorrect password | Access denied |
+| T3 | Add new application | Application added to list |
+| T4 | Match resume with 70% matching keywords | 70% score, list of matches/misses |
+| T5 | Predict with 70% match, no rejections | Medium-High chance |
+| T6 | Predict with 70% match, 2 rejections | Medium-Low chance |
+
+### User Manual
+
+#### Installation
+1. Compile the program:
+   ```
+   gcc -o job_tracker main.c
+   ```
+2. Run the executable:
+   ```
+   ./job_tracker
+   ```
+
+#### Usage Guide
+1. **Login**
+   - Enter your password when prompted
+   - Default password: "rahul123"
+
+2. **Main Menu Navigation**
+   - Enter the number corresponding to your choice
+   - Follow on-screen prompts
+
+3. **Job Tracker Usage**
+   - Add: Enter all requested job details
+   - View: See all applications or filter by status
+   - Update: Enter application ID and new status
+
+4. **ATS Matcher Usage**
+   - Prepare your resume in TXT format
+   - Enter the full path to resume file when prompted
+   - Paste the job description
+   - Review matching score and missing keywords
+
+5. **Prediction System Usage**
+   - Run after ATS matching
+   - Review prediction score and category
+   - Note the factors affecting prediction
+
+### Maintenance Guide
+
+#### Build Process
+1. Compile individual modules:
+   ```
+   gcc -c main.c login.c job_tracker.c keyword_matcher.c ai_prediction.c
+   ```
+2. Link modules:
+   ```
+   gcc -o job_tracker main.o login.o job_tracker.o keyword_matcher.o ai_prediction.o
+   ```
+
+#### Troubleshooting
+1. **File Access Issues**
+   - Check permissions on application data files
+   - Verify path to resume file is correct
+
+2. **Parsing Problems**
+   - Ensure resume is in plain text format
+   - Check for special characters in job descriptions
+
+3. **Prediction Anomalies**
+   - Verify history data is loading correctly
+   - Check score calculation for boundary conditions
+
+#### Debugging
+- Compile with debug symbols:
+  ```
+  gcc -g -o job_tracker main.c
+  ```
+- Use GDB for debugging:
+  ```
+  gdb ./job_tracker
+  ```
+
+### Version Control Strategy
+- Use Git for version control
+- Main branches:
+  - `main`: Production-ready code
+  - `develop`: Integration branch
+  - `feature/*`: Feature development
+- Version naming: `v[major].[minor].[patch]`
+
+### Coding Standards
+
+#### Naming Conventions
+- Functions: snake_case (e.g., `add_application`)
+- Variables: snake_case (e.g., `job_count`)
+- Constants: UPPER_SNAKE_CASE (e.g., `MAX_APPLICATIONS`)
+- Structs: PascalCase (e.g., `JobApplication`)
+
+#### Code Formatting
+- Indentation: 4 spaces
+- Braces: K&R style
+- Line length: Maximum 80 characters
+- Spacing: Space after keywords and commas
+
+#### Memory Management
+- Explicit allocation and deallocation
+- Check all malloc/calloc returns
+- Free memory in reverse order of allocation
+- Use valgrind for leak detection
+
+#### Error Handling
+- Use return codes for functions
+- Check all file operations
+- Validate all user inputs
+- Provide clear error messages
+
+## 5. Implementation Roadmap
+
+### Phase 1: Core Functionality
+1. Login system
+2. Basic job tracker (add, view)
+3. File I/O foundation
+
+### Phase 2: ATS Simulator
+1. Resume parsing
+2. Keyword extraction
+3. Matching algorithm
+
+### Phase 3: Advanced Features
+1. AI prediction engine
+2. Statistics generation
+3. UI refinements
+
+### Phase 4: Testing & Documentation
+1. Unit and integration testing
+2. User documentation
+3. Code cleanup and optimization
+
+## 6. Conclusion
+
+This documentation provides a comprehensive guide for developing the Job Application Tracker with ATS Simulator in C. The system is designed to help job seekers efficiently manage their applications and optimize their resumes for specific job descriptions. The addition of the AI prediction engine provides valuable insights to focus efforts on promising opportunities.
+
+By following the outlined designs and specifications, developers can implement a robust, maintainable, and user-friendly application that addresses the core needs of job seekers in the technical field.

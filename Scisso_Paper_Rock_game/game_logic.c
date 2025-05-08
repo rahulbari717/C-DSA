@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>  /* Add this line for strcmp function */
+#include <stdlib.h>
 #include "game_logic.h"
 
 int generateComputerChoice() {

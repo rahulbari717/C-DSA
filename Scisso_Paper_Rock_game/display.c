@@ -5,18 +5,30 @@
 
 void displayWelcome() {
     printf("\n");
-    printf("*************************************************\n");
-    printf("*                                               *\n");
-    printf("*             ROCK, PAPER, SCISSORS             *\n");
-    printf("*                                               *\n");
-    printf("*************************************************\n");
+    printf("   ____        _       _   _    _   _    _            ____   \n");
+    printf("U |  _\"\\  u U  /\"\\  u  |'| |'|U |\"\\|u| |  |\"\\|        U | __\")u \n");
+    printf(" \\\\| |_) |/  \\\\/ _ \\\\/  /| |_| |\\\\\\| |\\\\| |U | | u       \\\\|  _ \\\\/ \n");
+    printf("  |  _ <    / ___ \\\\  U|  _  |u | |_| | \\\\| |/__       | |_) | \n");
+    printf("  |_| \\_\\\\  /_/   \\_\\\\  |_| |_| <<\\\\___/   |_____|      |____/  \n");
+    printf("  //   \\\\_  \\\\\\    >>  //   \\\\\\(__) )(    //  \\\\\\      _|| \\\\_  \n");
+    printf(" (__)  (__)(__)  (__)(_\") (\"_)   (__)  (_\")(\"_)    (__) (__) \n");
     printf("\n");
-    printf("Welcome to the Rock, Paper, Scissors game!\n");
+    printf("  ========================================================\n");
+    printf("  ||           ROCK, PAPER, SCISSORS GAME               ||\n");
+    printf("  ||           Developed by: Rahul B.                   ||\n");
+    printf("  ||           Date : 3rd May 2025                      ||\n");
+    printf("  ========================================================\n");
     printf("\n");
-    printf("Game Rules:\n");
-    printf("- Rock crushes Scissors\n");
-    printf("- Scissors cuts Paper\n");
-    printf("- Paper covers Rock\n");
+    printf("  *************************************************\n");
+    printf("  *                 GAME RULES                     *\n");
+    printf("  *-----------------------------------------------*\n");
+    printf("  *     Rock     crushes    Scissors              *\n");
+    printf("  *     Scissors cuts       Paper                 *\n");
+    printf("  *     Paper    covers     Rock                  *\n");
+    printf("  *************************************************\n");
+    printf("\n");
+    printf("  Welcome to the ultimate Rock, Paper, Scissors challenge!\n");
+    printf("  Are you ready to test your luck and strategy?\n");
     printf("\n");
 }
 
